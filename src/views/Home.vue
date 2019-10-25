@@ -1,18 +1,38 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <button class="btn" v-on:click="getListAction">get list</button>
+    <li v-for="item in items" v-bind:key="item.id">
+      {{ item.name }} <button v-on:click="getDetailAction(item.id)">get detail</button>
+    </li>
+    {{ details }}
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'home',
-  components: {
-    HelloWorld
-  }
+  methods: {
+    getListAction() {
+      this.$store.dispatch('getList/getList')
+    },
+    getDetailAction(id) {
+      this.$store.dispatch('getDetail/getDetail', id)
+    }
+  },
+  computed: {
+    items() {
+      return this.$store.getters['getList/list']
+    },
+    details() {
+      return this.$store.getters['getDetail/detail']
+    }
+  },
 }
 </script>
+
+<style scoped>
+.btn {
+  margin: 50px 0;
+}
+</style>
